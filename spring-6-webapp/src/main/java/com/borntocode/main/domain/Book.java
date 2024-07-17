@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Book {
@@ -24,6 +25,9 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors  = new HashSet<>();
+
+    @ManyToOne
+    private Publisher publisher;
 
     public Set<Author> getAuthors() {
         return authors;
@@ -91,6 +95,16 @@ public class Book {
         return Objects.equals(this.authors, other.authors);
     }
 
+
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -99,6 +113,7 @@ public class Book {
         sb.append(", title=").append(title);
         sb.append(", isbn=").append(isbn);
         sb.append(", authors=").append(authors);
+        sb.append(", publisher=").append(publisher);
         sb.append('}');
         return sb.toString();
     }

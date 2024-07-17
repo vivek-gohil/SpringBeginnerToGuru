@@ -5,19 +5,28 @@ import org.springframework.stereotype.Component;
 
 import com.borntocode.main.domain.Author;
 import com.borntocode.main.domain.Book;
+import com.borntocode.main.domain.Publisher;
 import com.borntocode.main.repositories.AuthorRepository;
 import com.borntocode.main.repositories.BookRepository;
+import com.borntocode.main.repositories.PublisherRepository;
 
 @Component
 public class BootstrapData implements  CommandLineRunner{
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
-    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
+    
+
+    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository,
+            PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
     }
+
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -46,12 +55,28 @@ public class BootstrapData implements  CommandLineRunner{
         author.getBooks().add(savedBook);
         authorTwo.getBooks().add(savedBookTwo);
 
+        Publisher publisher = new Publisher();
+        publisher.setPublisherName("Panguin");
+        publisher.setAddress("India");
+        Publisher savedPublisher = publisherRepository.save(publisher);
+
+        savedBook.setPublisher(savedPublisher);
+        savedBookTwo.setPublisher(savedPublisher);
+
         authorRepository.save(savedAuthor);
         authorRepository.save(savedAuthorTwo);
+
+        bookRepository.save(savedBook);
+        bookRepository.save(savedBookTwo);
 
         System.out.println("In Bookstrap");
         System.out.println("Author Count : " + authorRepository.count());
         System.out.println("Book Count : " + bookRepository.count());
+
+        
+
+        System.out.println("Publisher Count : " + publisherRepository.count());
+
         
     }
 
