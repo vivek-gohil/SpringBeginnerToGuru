@@ -17,16 +17,12 @@ public class BootstrapData implements  CommandLineRunner{
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
 
-    
-
     public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository,
             PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.publisherRepository = publisherRepository;
     }
-
-
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,8 +48,10 @@ public class BootstrapData implements  CommandLineRunner{
         Author savedAuthorTwo = authorRepository.save(authorTwo);
         Book savedBookTwo = bookRepository.save(bookTwo);
 
-        author.getBooks().add(savedBook);
-        authorTwo.getBooks().add(savedBookTwo);
+        savedAuthor.getBooks().add(savedBook);
+        savedAuthorTwo.getBooks().add(savedBookTwo);
+        savedBook.getAuthors().add(savedAuthor);
+        savedBookTwo.getAuthors().add(savedAuthorTwo);
 
         Publisher publisher = new Publisher();
         publisher.setPublisherName("Panguin");
